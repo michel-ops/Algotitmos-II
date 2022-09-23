@@ -107,3 +107,55 @@ int VALIDA_DATA(int dia, int mes, int ano)
 
 	return VALIDADO;
 }
+
+int VALIDA_CPF(char cpf[12])
+{
+	int dig_1=0, dig_2=0, validacao=0;
+
+	for (int i = 0; i<12 ; i++)
+	{
+		cpf[i]= cpf[i] - '0';
+	}
+
+	//DIGITO VERIFICADOR 1
+	for (int i=0,j=10; i<9 ; i++,j--)
+	{
+		dig_1 = dig_1 + cpf[i]*j;
+	}
+	if (dig_1<2)
+	{
+		dig_1 =0;
+	}
+	else
+	{
+		dig_1 = 11 - (dig_1%11);
+	}
+	/////////////////////////////////////////////////////////
+	
+	//DIGITO VERIFICADOR 2
+	for (int i=0,j=11; i<9 ; i++,j--)
+	{
+		dig_2 = dig_2 + cpf[i]*j;
+	}
+	dig_2 = dig_2 + dig_1*2;
+	if (dig_2<2)
+	{
+		dig_2 = 0;
+	}
+	else
+	{
+		dig_2 = 11 - (dig_2%11);
+	}
+	/////////////////////////////////////////////////////////
+
+	if ( dig_1 == cpf[9] && dig_2 == cpf[10])
+	{
+		validacao = 1;
+	}
+	else
+	{
+		validacao = 0;
+	}
+	
+	return validacao;
+}

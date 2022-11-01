@@ -1,5 +1,5 @@
-
 #include <stdlib.h>
+
 
 //VALIDACAO DE DATAS FUNCIONANDO!
 int VERIFICA_ANO_BISSEXTO(int ANO)
@@ -130,6 +130,7 @@ int VALIDA_CPF(char cpf[12])
 	{
 		dig_1 = 11 - (dig_1%11);
 	}
+	
 	/////////////////////////////////////////////////////////
 	
 	//DIGITO VERIFICADOR 2
@@ -159,3 +160,38 @@ int VALIDA_CPF(char cpf[12])
 	
 	return validacao;
 }
+
+int VALIDA_TEL(char tel[12])
+{
+	int VALIDADO=1;
+	
+	printf("\nCARACTERES INVALIDOS: ");
+
+	for (int i=0; i<11, VALIDADO!=0 ; i++)
+	{
+		if (tel[i]<'0' || tel[i]>'9')
+		{
+			VALIDADO = 0;
+			printf("%c",tel[i]);
+		}
+		
+	}
+
+	return VALIDADO;
+}
+
+/*
+int VALIDA_EMAIL(char email[50])
+{
+	int VALIDADO=0;
+	for (int i=0; i<50 ; i++)
+	{
+		if (email[i]=='@')
+		{
+			
+		}
+		
+	}
+	
+}
+*/

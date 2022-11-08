@@ -1,113 +1,154 @@
-
+#include <cstdlib>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "/home/michel-dick/ALGORITMOS/Algotitmos-II-main/algoritmosII.cpp"
+#include "C:\Users\hkhj\Documents\algII\Algotitmos-II-main\algoritmosII.cpp"
 
+using namespace std;
 
 typedef struct RECLAMACAO
 {
-    char cpf[12];
-    char email[50];
-    char tel[11];
-    char reclamacao[256];
-
+    char cpf[12], tel[10], email[80], reclamacao[256];
 }RECLAMACAO;
 
 void Cadastro_Reclamacao(FILE *Cad)
 {
-    RECLAMACAO cad_reclamacao;
-    char s_ou_n;
-
-    //CPF
-    printf("\nDigite seu cpf: ");
-    scanf("%s", &cad_reclamacao.cpf);
+    RECLAMACAO cadastro_pessoa;
+    int continua;
     
-    while (!(VALIDA_CPF(cad_reclamacao.cpf)))
+    //CPF
+    fflush(stdin);
+    printf("\ndigite seu cpf: ");
+    gets(cadastro_pessoa.cpf);
+    fflush(stdin);
+    printf("%d",MODULO_ONZE(cadastro_pessoa.cpf));
+    while (MODULO_ONZE(cadastro_pessoa.cpf))
     {
-        printf("\nDigite um cpf VALIDO: ");
-        scanf("%s", &cad_reclamacao.cpf);
+        fflush(stdin);
+        printf("\ndigite um cpf VALIDO: ");
+        gets(cadastro_pessoa.cpf);
+        fflush(stdin);
+    }
+
+    //TELEFONE 
+    fflush(stdin);
+    printf("\ndigite seu numero de telefone: ");
+    gets(cadastro_pessoa.tel);
+    fflush(stdin);
+    while (VALIDA_TEL(cadastro_pessoa.tel))
+    {
+        fflush(stdin);
+        printf("\ndigite um numero de telefone VALIDO: ");
+        gets(cadastro_pessoa.tel);
+        fflush(stdin);
     }
 
     //EMAIL
-    /*
+    fflush(stdin);
     printf("\ndigite seu email: ");
-    scanf("%s", &cad_reclamacao.email);
-    //COMO VALIDAR???
-    */
-  
-    //TELEFONE
-    printf("\nDigite seu telefone: ");
-    scanf("%s", &cad_reclamacao.tel);
-    while (VALIDA_TEL(cad_reclamacao.tel))
+    gets(cadastro_pessoa.email);
+    fflush(stdin);
+    while (VALIDA_EMAIL(cadastro_pessoa.email))
     {
-        printf("\nDigite um numero de telefone VALIDO: ");
-        scanf("%s",&cad_reclamacao.tel);
+        fflush(stdin);
+        printf("\ndigite uma email VALIDO: ");
+        gets(cadastro_pessoa.email);
+        fflush(stdin);
+        fflush(stdin);
     }
 
     //RECLAMACAO
-    /*    
+    fflush(stdin);
     printf("\ndigite sua reclamacao: ");
-    scanf("%[^\n]s", &cad_reclamacao.reclamacao);
-    if(strlen(cad_reclamacao.reclamacao)<256)
-    {
-        printf("\nvoce ainda tem %d caracteres para digitar",strlen(cad_reclamacao.reclamacao));
-        printf("\nvc quer acresentar algo?[s/n]");
-        scanf("%c", &s_ou_n);
-        toupper(s_ou_n);
-        if (s_ou_n == 'S')
-        { 
-            char rec_cont[256-strlen(cad_reclamacao.reclamacao)];
-            printf("\n %s",cad_reclamacao.reclamacao);  
-            fgets(rec_cont,(256-strlen(cad_reclamacao.reclamacao)),stdin);
-            strcat(cad_reclamacao.reclamacao, rec_cont);
-        }
-    }
-    */
+    gets(cadastro_pessoa.reclamacao);
+    fflush(stdin);
 
-    //ABRE ARQUIVO  
-    /*
-    //abre arquivo e insere
-    Cad = fopen("Reclamacao.txt","a+");
+    //INSERE ARQUIVO
+    Cad = fopen("RECLAMACAO.txt","a+");
     if (Cad == NULL)
     {
-        printf("\nErro na abertura do arquivo");
+        printf("\nERRO ao tentar abrir o arquvo! ");
     }
     else
     {
-        fprintf(Cad,"\n%s",cad_reclamacao.cpf);
-        fprintf(Cad,"\n%s",cad_reclamacao.email);
-        fprintf(Cad,"\n%s",cad_reclamacao.tel);
-        fprintf(Cad,"\n%s",cad_reclamacao.reclamacao);
-        fprintf(Cad,"\n################################");
+        printf("\narquivo aberto com sucesso! ");
+        fprintf(Cad, "%s\n",cadastro_pessoa.cpf);
+        fprintf(Cad, "%s\n",cadastro_pessoa.tel);
+        fprintf(Cad, "%s\n",cadastro_pessoa.email);
+        fprintf(Cad, "%s\n",cadastro_pessoa.reclamacao);
+        fprintf(Cad, "--------------------------------------\n");
     }
-
     fclose(Cad);
-    */
 
-    printf("\n ");
-    printf("\n ##########################################");
-    printf("\nCPF: %s", cad_reclamacao.cpf);
-    printf("\nTELEFONE: %s", cad_reclamacao.tel);
-    //printf("\n email: %s", cad_reclamacao.email);
-    //printf("\n reclamacao: %s",cad_reclamacao.reclamacao);
-    printf("\n ##########################################");
-    printf("\n ");
+    //TESTE PRINTF DO QUE TA ARMAZENADO NAS STRINGS
+    printf("\n");
+    printf("\nCPF: [%s]",cadastro_pessoa.cpf);
+    printf("\nEMAIL: [%s]",cadastro_pessoa.email);
+    printf("\nTELEFONE: [%s]",cadastro_pessoa.tel);
+    printf("\nRECLAMACAO: %s",cadastro_pessoa.reclamacao);
+    printf("\n");
 
+}
+
+/*
+void imprimi_reclamacao(RECLAMACAO rec)
+{
+    printf("CPF: %s\n",rec.cpf);
+    printf("TELEFONE: %s\n",rec.tel);
+    printf("EMAIL: %s\n",rec.email);
+    printf("RECLAMACAO: %s\n",rec.reclamacao);
+}
+*/
+
+void mostra_arquivo(FILE *Cad)
+{
+    Cad = fopen("RECLAMACAO.txt","r");
+    
+    if (Cad == NULL)
+    {
+        printf("\nERRO ao abrir o arquivo!");
+    }
+    else
+    {
+        printf("\nArquivo aberto com sucesso!");
+        printf("\n");
+        while (!feof(Cad))
+        {
+            RECLAMACAO Cadastro_Reclamacao;
+            char quebra_linha[40];   
+            
+            //cpf
+            fscanf(Cad, "%11s\n"    ,Cadastro_Reclamacao.cpf);
+            fscanf(Cad, "%9s\n"     ,Cadastro_Reclamacao.tel);
+            fscanf(Cad, "%80s\n"    ,Cadastro_Reclamacao.email);
+            fgets(Cadastro_Reclamacao.reclamacao, 256, Cad);
+
+
+            printf("\n");
+            printf("CPF: %s\n",Cadastro_Reclamacao.cpf);
+            printf("TELEFONE: %s\n",Cadastro_Reclamacao.tel);
+            printf("EMAIL: %s\n",Cadastro_Reclamacao.email);
+            printf("RECLAMACAO: %s\n",Cadastro_Reclamacao.reclamacao);
+            printf("\n");
+
+            fgets(quebra_linha, 40, Cad);
+            printf("\n%s",quebra_linha);
+        }
+    }
+    fclose(Cad);
 }
 
 int main(int argc, char const *argv[])
 {
     FILE *Cadastro;
-    char tel[11];
     int opcao=0;
 
     while (opcao != 3)
     {
-        printf("\n-- MENU --");
-        printf("\n-1- Cadastrar reclamacao");
-        printf("\n-2- Mostrar arquivo");
-        printf("\n-3- Fim");
+        printf("\n      ---- MENU ----   ");
+        printf("\n1- Cadastrar reclamacao");
+        printf("\n2- Mostrar arquivo");
+        printf("\n3- Fim\n [opcao]: ");
         scanf("%d",&opcao);
 
         switch (opcao)
@@ -117,21 +158,16 @@ int main(int argc, char const *argv[])
                 break;
 
             case 2:
+                mostra_arquivo(Cadastro);
                 break;
 
             case 3:
+                printf("\nPrograma Encerrado! ");
                 opcao = 3;
                 break;
             
             default:
-                while (opcao<1 || opcao>3)
-                { 
-                    printf("\nDIGITE UMA OPCAO VALIDA");
-                    printf("\n-1- Cadastrar reclamacao");
-                    printf("\n-2- Mostrar arquivo");
-                    printf("\n-3- Fim");
-                    scanf("%d",&opcao);
-                }
+                printf("\nOPCAO INVALIDA!");
                 break;
         }
     }

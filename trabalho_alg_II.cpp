@@ -14,45 +14,44 @@ typedef struct RECLAMACAO
 void Cadastro_Reclamacao(FILE *Cad)
 {
     RECLAMACAO cadastro_pessoa;
-    int continua;
+    int opcao;
     
     //CPF
     fflush(stdin);
     printf("\ndigite seu cpf: ");
-    gets(cadastro_pessoa.cpf);
+    scanf("%11s",cadastro_pessoa.cpf);
     fflush(stdin);
-    printf("%d",MODULO_ONZE(cadastro_pessoa.cpf));
     while (MODULO_ONZE(cadastro_pessoa.cpf))
     {
         fflush(stdin);
         printf("\ndigite um cpf VALIDO: ");
-        gets(cadastro_pessoa.cpf);
+        scanf("%11s",cadastro_pessoa.cpf);
         fflush(stdin);
     }
 
     //TELEFONE 
     fflush(stdin);
     printf("\ndigite seu numero de telefone: ");
-    gets(cadastro_pessoa.tel);
+    scanf("%9s",cadastro_pessoa.tel);
     fflush(stdin);
     while (VALIDA_TEL(cadastro_pessoa.tel))
     {
         fflush(stdin);
         printf("\ndigite um numero de telefone VALIDO: ");
-        gets(cadastro_pessoa.tel);
+        scanf("%9s",cadastro_pessoa.tel);
         fflush(stdin);
     }
 
     //EMAIL
     fflush(stdin);
     printf("\ndigite seu email: ");
-    gets(cadastro_pessoa.email);
+    scanf("%80s",cadastro_pessoa.email);
     fflush(stdin);
     while (VALIDA_EMAIL(cadastro_pessoa.email))
     {
         fflush(stdin);
         printf("\ndigite uma email VALIDO: ");
-        gets(cadastro_pessoa.email);
+        scanf("%80s",cadastro_pessoa.email);
         fflush(stdin);
         fflush(stdin);
     }
@@ -62,6 +61,20 @@ void Cadastro_Reclamacao(FILE *Cad)
     printf("\ndigite sua reclamacao: ");
     gets(cadastro_pessoa.reclamacao);
     fflush(stdin);
+    if (strlen(cadastro_pessoa.reclamacao) < 255)
+    {
+        printf("\nVoce digitou %d caracteres quer digitar uma reclamcao maior? [1/0]\n", strlen(cadastro_pessoa.reclamacao));
+        scanf("%d",&opcao);
+        if (opcao==1)
+        {
+            fflush(stdin);
+            printf("\ndigite sua reclamacao: ");
+            gets(cadastro_pessoa.reclamacao);
+            fflush(stdin);
+        }
+        
+    }
+    
 
     //INSERE ARQUIVO
     Cad = fopen("RECLAMACAO.txt","a+");
@@ -102,7 +115,7 @@ void imprimi_reclamacao(RECLAMACAO rec)
 
 void mostra_arquivo(FILE *Cad)
 {
-    Cad = fopen("RECLAMACAO.txt","r");
+    Cad = fopen("RECLAMACAO.txt","rt");
     
     if (Cad == NULL)
     {

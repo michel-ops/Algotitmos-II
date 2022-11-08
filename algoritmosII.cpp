@@ -8,13 +8,9 @@ int MODULO_ONZE(char cpf[12])
 	int digito_1=0, digito_2=0, rst_div, VALIDADO=1;
 
 	
-	if( cpf[0] == cpf[1] == cpf[2] ==
-		cpf[3] == cpf[4] == cpf[5] == 
-		cpf[6] == cpf[7] == cpf[8] == 
-		cpf[9] == cpf[10] == cpf[11]
-	  ) 
+	if( cpf[0] == cpf[1] == cpf[2] == cpf[3] == cpf[4] == cpf[5] == cpf[6] == cpf[7] == cpf[8] == cpf[9] == cpf[10] ) 
 	{
-		return 1;
+		return VALIDADO;
 	}
 	
 	//CAST CHAR TO INT
@@ -84,11 +80,20 @@ int VALIDA_TEL(char tel[10])
 {
 	int VALIDADO=0;
 
-	for (int i = 0; i<10 ; i++)
+	if (tel[0]!=57)
 	{
-		if ((tel[i]<'0' || tel[i]>'9'))
+		VALIDADO=1;
+	}
+	
+	for (int i=0 ; i<9 ; i++)
+	{
+		if ( tel[i]>=48 && tel[i]<=57 && VALIDADO==0)
 		{
-			return 1;
+			VALIDADO = 0;
+		}
+		else
+		{
+			VALIDADO = 1;
 		}
 	}
 	
